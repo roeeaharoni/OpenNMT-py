@@ -126,33 +126,23 @@ def main():
                 os.write(1, output.encode('utf-8'))
 
             if opt.attn_debug:
-                best_attn = trans.attns[0]
+                for k in xrange(opt.n_best):
+                    pred_sent = ' '.join(trans.pred_sents[k]) + ' EOS'
+                    raw_src_sent = ' '.join(trans.src_raw)
+                    best_attn = trans.attns[k]
+                    attn_file.write("{} ||| {} ||| {} ||| {} ||| {} {}\n".format(sent_number,
+                                                                                 pred_sent,
+                                                                                 k,
+                                                                                 raw_src_sent,
+                                                                                 len(trans.src_raw),
+                                                                                 len(trans.pred_sents[k]) + 1))
+                    output_rows = best_attn.shape[0]
+                    for i in xrange(output_rows):
+                        output_row_values = list(best_attn[i, :])
+                        attn_file.write('{}\n'.format(' '.join(str(x) for x in output_row_values)))
 
-                # format
-                attn_file.write("{} ||| {} ||| {} ||| {} ||| {} {}\n".format(sent_number,
-                                                                ' '.join(trans.pred_sents[0]) + ' EOS',
-                                                                0,
-                                                                ' '.join(trans.src_raw),
-                                                                len(trans.src_raw),
-                                                                len(trans.pred_sents[0]) + 1))
-                print 'src len: {}'.format(len(trans.src_raw))
-                print 'trg len: {}'.format(len(trans.pred_sents[0]) + 1)
-                print 'attn shape[0]: {}'.format(best_attn.shape[0])
-                print 'attn shape[1]: {}'.format(best_attn.shape[1])
-
-                # attn shape 0 (#tensor rows) equals the amount of output words
-                # attn shape 1 (#tensor cols) equals the amount of input words
-                # so each col should sum up to 1
-
-                # print each column in a row
-                output_rows = best_attn.shape[0]
-                for i in xrange(output_rows):
-                    row_values = list(best_attn[i, :])
-                    print str(sum(row_values))
-                    attn_file.write('{}\n'.format(' '.join(str(x) for x in row_values)))
-
-                attn_file.write("\n")
-                attn_file.flush()
+                    attn_file.write("\n")
+                    attn_file.flush()
 
 
     _report_score('PRED', pred_score_total, pred_words_total)
