@@ -140,10 +140,16 @@ def main():
                 print 'attn shape[0]: {}'.format(best_attn.shape[0])
                 print 'attn shape[1]: {}'.format(best_attn.shape[1])
 
+                # attn shape 0 (#tensor rows) equals the amount of output words
+                # attn shape 1 (#tensor cols) equals the amount of input words
+                # so each col should sum up to 1
+
                 # print each column in a row
-                cols = best_attn.shape[0]
-                for i in xrange(cols):
-                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[i, :]))))
+                output_rows = best_attn.shape[0]
+                for i in xrange(output_rows):
+                    row_values = list(best_attn[i, :])
+                    print str(sum(row_values))
+                    attn_file.write('{}\n'.format(' '.join(str(x) for x in row_values)))
 
                 attn_file.write("\n")
                 attn_file.flush()
