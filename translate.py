@@ -130,13 +130,13 @@ def main():
 
                 # format
                 attn_file.write("{} ||| {} ||| {} ||| {} ||| {} {}\n".format(sent_number,
-                                                                ' '.join(trans.pred_sents[0]),
+                                                                ' '.join(trans.pred_sents[0]) + ' EOS',
                                                                 0,
                                                                 ' '.join(trans.src_raw),
                                                                 len(trans.src_raw),
-                                                                len(trans.pred_sents[0])))
+                                                                len(trans.pred_sents[0]) + 1))
                 print 'src len: {}'.format(len(trans.src_raw))
-                print 'trg len: {}'.format(len(trans.pred_sents[0]))
+                print 'trg len: {}'.format(len(trans.pred_sents[0]) + 1)
                 print 'attn shape[0]: {}'.format(best_attn.shape[0])
                 print 'attn shape[1]: {}'.format(best_attn.shape[1])
 
