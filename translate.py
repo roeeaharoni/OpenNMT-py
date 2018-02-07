@@ -126,17 +126,19 @@ def main():
                 os.write(1, output.encode('utf-8'))
 
             if opt.attn_debug:
+                best_attn = trans.attns[0]
+
                 # format
                 attn_file.write("{} ||| {} ||| {} ||| {} ||| {} {}\n".format(sent_number,
-                                                                ' '.join(trans.src_raw),
-                                                                0,
                                                                 ' '.join(trans.pred_sents[0]),
-                                                                len(trans.pred_sents[0]),
-                                                                len(trans.src_raw)))
-                # print each column in a separate row
-                cols = trans.attns[0].shape[1]
-                for i in xrange(cols):
-                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(trans.attns[0][:, i]))))
+                                                                0,
+                                                                ' '.join(trans.src_raw),
+                                                                len(trans.src_raw),
+                                                                len(trans.pred_sents[0])))
+                # print each row
+                rows = best_attn.shape[0]
+                for i in xrange(rows):
+                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[i, :]))))
 
                 attn_file.write("\n")
                 attn_file.flush()
