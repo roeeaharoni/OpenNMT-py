@@ -135,8 +135,13 @@ def main():
                                                                 ' '.join(trans.src_raw),
                                                                 len(trans.src_raw),
                                                                 len(trans.pred_sents[0])))
+                print 'src len: {}'.format(len(trans.src_raw))
+                print 'trg len: {}'.format(len(trans.pred_sents[0]))
+                print 'attn shape[0]: {}'.format(best_attn.shape[0])
+                print 'attn shape[1]: {}'.format(best_attn.shape[1])
+
                 # print each column in a row
-                cols = best_attn.shape[1]
+                cols = best_attn.shape[0]
                 for i in xrange(cols):
                     attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[:, i]))))
 
