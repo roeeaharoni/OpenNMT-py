@@ -64,6 +64,8 @@ def main():
     # File to write sentences to.
     out_file = codecs.open(opt.output, 'w', 'utf-8')
 
+    attn_file = codecs.open(opt.output + '.attn', 'w', 'utf-8')
+
     # Test data
     data = onmt.io.build_dataset(fields, opt.data_type,
                                  opt.src, opt.tgt,
@@ -118,13 +120,27 @@ def main():
             out_file.write('\n')
             out_file.flush()
 
-            # TODO: format
-            print trans.attns[0]
-
+            sent_number = next(counter)
             if opt.verbose:
-                sent_number = next(counter)
                 output = trans.log(sent_number)
                 os.write(1, output.encode('utf-8'))
+
+            if opt.attn_debug:
+                # format
+                attn_file.write("{} ||| {} ||| {} ||| {} ||| {} {}\n".format(sent_number,
+                                                                ' '.join(trans.src_raw),
+                                                                0,
+                                                                trans.pred_sents[0],
+                                                                len(trans.pred_sents[0]),
+                                                                len(trans.src_raw)))
+                # print each column in a separate row
+                cols = trans.attns[0].shape[1]
+                for i in xrange(cols):
+                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(trans.attns[0][:, i]))))
+
+                attn_file.write("\n")
+                attn_file.flush()
+
 
     _report_score('PRED', pred_score_total, pred_words_total)
     if opt.tgt:
