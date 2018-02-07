@@ -130,7 +130,7 @@ def main():
                 attn_file.write("{} ||| {} ||| {} ||| {} ||| {} {}\n".format(sent_number,
                                                                 ' '.join(trans.src_raw),
                                                                 0,
-                                                                trans.pred_sents[0],
+                                                                ' '.join(trans.pred_sents[0]),
                                                                 len(trans.pred_sents[0]),
                                                                 len(trans.src_raw)))
                 # print each column in a separate row
