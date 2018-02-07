@@ -135,10 +135,10 @@ def main():
                                                                 ' '.join(trans.src_raw),
                                                                 len(trans.src_raw),
                                                                 len(trans.pred_sents[0])))
-                # print each row
-                rows = best_attn.shape[0]
-                for i in xrange(rows):
-                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[i, :]))))
+                # print each column in a row
+                cols = best_attn.shape[1]
+                for i in xrange(cols):
+                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[:, i]))))
 
                 attn_file.write("\n")
                 attn_file.flush()
