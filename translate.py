@@ -144,7 +144,6 @@ def main():
                     attn_file.write("\n")
                     attn_file.flush()
 
-
     _report_score('PRED', pred_score_total, pred_words_total)
     if opt.tgt:
         _report_score('GOLD', gold_score_total, gold_words_total)
