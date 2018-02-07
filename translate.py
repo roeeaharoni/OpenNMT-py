@@ -143,7 +143,7 @@ def main():
                 # print each column in a row
                 cols = best_attn.shape[0]
                 for i in xrange(cols):
-                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[:, i]))))
+                    attn_file.write('{}\n'.format(' '.join(str(x) for x in list(best_attn[i, :]))))
 
                 attn_file.write("\n")
                 attn_file.flush()
