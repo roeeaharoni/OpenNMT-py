@@ -118,6 +118,9 @@ def main():
             out_file.write('\n')
             out_file.flush()
 
+            # TODO: format
+            print trans.attns[0]
+
             if opt.verbose:
                 sent_number = next(counter)
                 output = trans.log(sent_number)
